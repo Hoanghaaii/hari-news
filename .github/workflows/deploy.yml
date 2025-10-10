@@ -1,4 +1,5 @@
-name: CI/CD for Backend
+# Đổi tên để phản ánh đúng nhiệm vụ là CI (Tích hợp liên tục)
+name: CI - Build and Push Backend Image
 
 on:
   push:
@@ -6,7 +7,8 @@ on:
       - main
 
 jobs:
-  deploy:
+  # Đổi tên job từ 'deploy' thành 'build_and_push' cho rõ ràng
+  build_and_push:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,14 +37,4 @@ jobs:
             hoanghaaii/hari-news:latest
             hoanghaaii/hari-news:${{ env.SHORT_SHA }}
 
-      - name: Deploy via SSH and Docker Compose
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /root/hari-news
-            docker pull hoanghaaii/hari-news:${{ env.SHORT_SHA }}
-            docker tag hoanghaaii/hari-news:${{ env.SHORT_SHA }} hoanghaaii/hari-news:latest
-            docker-compose up -d app
+      # ---- ĐÃ XÓA BƯỚC DEPLOY BẰNG SSH Ở ĐÂY ----
